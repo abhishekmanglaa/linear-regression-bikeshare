@@ -26,7 +26,7 @@ About R Markdown - https://r4ds.had.co.nz/r-markdown.html#r-markdown-basics
 
 Bikeshare systems are popular in major cities around the world and are increasingly viewed as an important mechanism to reduce auto traffic, improve air quality, reduce use of fossil fuels, and improve the health of the population. It is particularly important to be able to predict the use level of the bikesharing system in order to plan maintenance, distribution of the bikes, and make decisions on whether and where to add more bike stations.
 This data is from Washington, DC’s Capital bikeshare system from the years 2011-2012. Riders can rent bikes from one location and return to a different location in the system. There are two types of users: CASUAL users, who rent the bike for a one-time fee, and REGISTERED users, who pay a yearly membership fee in exchange for unlimited bike rental.
-The data in the accompanying file bikeshare.csv (posted on Canvas) is publicly available at the UC Irvine Machine Learning Repository:
+The data in the accompanying file bikeshare.csv is publicly available at the UC Irvine Machine Learning Repository:
 http://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset
 The file contains daily information on the number of trips taken. The variables in the data set are:
 1. MONTH
