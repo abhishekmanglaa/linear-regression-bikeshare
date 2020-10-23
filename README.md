@@ -3,7 +3,26 @@
 [Link to the Markdown file](https://github.com/abhishekmanglaa/linear-regression-bikeshare/blob/main/linear-regression.md)
 
 
-The Data
+## Installation
+
+Using tidyverse and the strength of ggplot2.
+
+```bash
+library(tidyverse)
+library(readr)
+```
+You can also knit the file to a html document
+
+## Usage
+
+```r
+install.packages('readr')
+install.packages('tidyverse')
+```
+
+About R Markdown - https://r4ds.had.co.nz/r-markdown.html#r-markdown-basics
+
+## Data
 
 Bikeshare systems are popular in major cities around the world and are increasingly viewed as an important mechanism to reduce auto traffic, improve air quality, reduce use of fossil fuels, and improve the health of the population. It is particularly important to be able to predict the use level of the bikesharing system in order to plan maintenance, distribution of the bikes, and make decisions on whether and where to add more bike stations.
 This data is from Washington, DC’s Capital bikeshare system from the years 2011-2012. Riders can rent bikes from one location and return to a different location in the system. There are two types of users: CASUAL users, who rent the bike for a one-time fee, and REGISTERED users, who pay a yearly membership fee in exchange for unlimited bike rental.
@@ -26,3 +45,11 @@ is NO.
 9. CASUAL: count of bikes rented by casual bikeshare users.
 10. REGISTERED: count of registered users.
 11. COUNT: count of total rental bikes including both casual and registered.
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
