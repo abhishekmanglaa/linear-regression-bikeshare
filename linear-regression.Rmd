@@ -1,0 +1,108 @@
+---
+title: "Linear Regression Bikeshare"
+output: github_document
+---
+
+The goal of this notebookis to review the fundamental concepts of regression modelling. We will also begin to practice using the statistical programming language R.
+
+-> There are two goals. The first is to predict the variable COUNT as a function of the other variables. The second is to determine the effect of bad weather on the number of bikes rented.
+
+```{r setup, include = FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+bikeShare <- read.csv("Data/bikeshare.csv")
+```
+
+## Part 1: Wrangling and Exploratory Data Analysis
+
+Adding a new variable BADWEATHER, which is “YES” if there is light or heavy 
+rain or snow (if WEATHERSIT is 3 or 4), and “NO” otherwise (if WEATHERSIT is 1
+or 2).
+
+```{r Scatter Plots}
+bikeShare$WEATHERSIT <- as.numeric(bikeShare$WEATHERSIT)
+bikeShare$BADWEATHER <- ifelse(bikeShare$WEATHERSIT > 2 , "YES", "NO")
+
+#ScatterPlot for COUNT
+ggplot(bikeShare, aes(ATEMP,COUNT, color = BADWEATHER)) + geom_point()
+
+#Scotter Plot for CASUAL users
+ggplot(bikeShare, aes(ATEMP,CASUAL, color = BADWEATHER)) + geom_point()
+
+#Scatter Plot for RESGISTERED users
+ggplot(bikeShare, aes(ATEMP,REGISTERED, color = BADWEATHER)) + geom_point()
+
+```
+
+As we observe that the count of bike rides forms a curve. The count of rides is maximum when ATEMP is ~ 0.6 which approximates to 24 degree Celsius, which is pleasant weather.
+
+In case of registered users, we see the trend similar to the count of total rides. But for casual rides the curve is different.
+Also, we can see that registered users are more active even on bad weather days.
+
+## Part 2: Basic Regression
+
+Running a multivariate regression for COUNT, using the factors listed as well as TEMP, ATEMP, HUMIDITY, and WINDSPEED.
+
+```{r}
+
+bikeShare$BADWEATHER <- as.factor(bikeShare$BADWEATHER)
+Regression1 <- lm(COUNT~MONTH + WEEKDAY + HOLIDAY + TEMP + ATEMP + 
+                    HUMIDITY + WINDSPEED, 
+                    data = bikeShare)
+summary(Regression1)
+
+#Predict the COUNT
+sum(Regression1$coefficients*c(1,0,0,0,1,0,0,0,0,0,0,0,1,0,0.35,0.30,0.21,0.30,1))
+
+```
+
+The p-value of BADWEATHERYES is very low, hence it has a significant effect on the count of bikeshare requests. The coefficient if 1701, means on average if the weather is not bad, the count is 1701 more than if it was bad.
+
+## Part 3: More Regression Modelling
+
+1) Running a simple regression to determine the effect of bad weather on COUNT when other variables are not included in the model.
+
+```{r}
+Regression2 <- lm(COUNT~BADWEATHER, data = bikeShare)
+summary(Regression2)
+```
+
+The difference in the coefficients is due to the inclusion of other variables. In the previous regression we had all the variables hence the effect gets reduced.
+
+
+2) Regression with interaction term BADWEATHER*WEEKDAY
+
+```{r}
+#Regression with interaction term BADWEATHER*WEEKDAY
+Regression3 <- lm(COUNT~ BADWEATHER + WEEKDAY + BADWEATHER*WEEKDAY, data = bikeShare)
+summary(Regression3)
+```
+
+We start by adding an interaction term BADWEATHER*WEEKDAY. Since the coefficient of the interaction term BADWEATHER*WEEKDAY is negative, bike share use is more negatively affected if it’s a weekday. But since the p-value of the interaction term is 0.83, the significance is very low.
+
+
+## Part 4: Even more Regression
+
+1) Running a regression with TEMP & ATEMP
+
+```{r}
+Regression4 <- lm(COUNT ~ MONTH + HOLIDAY + WEEKDAY + BADWEATHER + TEMP + ATEMP
+                  ,data = bikeShare)
+summary(Regression4)
+
+```
+
+2) Running a regression without TEMP & ATEMP
+
+```{r}
+Regression5 <- lm(COUNT ~ MONTH + HOLIDAY + WEEKDAY + BADWEATHER, 
+                  data = bikeShare)
+summary(Regression5)  
+```
+
+When we are trying to predict the value of COUNT, the model with higher adjusted R-Squared is better (which has both ATEMP and TEMP),
+But if our use case is just to make an inference TEMP and ATEMP do not have
+any significance in determining the COUNT.
+
